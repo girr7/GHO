@@ -1,0 +1,9 @@
+python-binance==1.0.19
+python-dotenv==1.0.0
+pandas==2.1.4
+numpy==1.26.2
+ta==0.11.0
+schedule==1.2.1
+colorlog==6.8.0
+requests==2.31.0
+websocket-client==1.7.0
