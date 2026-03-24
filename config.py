@@ -27,7 +27,7 @@ class Config:
     RSI_OVERBOUGHT: float = 70.0
     MA_FAST: int = 9
     MA_SLOW: int = 21
-    KLINE_INTERVAL: str = "15m"  # Candlestick interval
+    KLINE_INTERVAL: str = "1m"   # Candlestick interval
     KLINE_LIMIT: int = 100        # Number of candles to fetch
 
     # Logging
