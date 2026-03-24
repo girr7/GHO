@@ -1,6 +1,6 @@
 # Binance Trading Bot
 
-Bot de trading automatizado que se conecta a Binance usando la API oficial. Implementa estrategias técnicas basadas en RSI y cruce de medias móviles (EMA).
+Bot de trading automatizado que se conecta a Binance usando la API oficial. Implementa estrategias técnicas basadas en RSI, cruce de medias móviles (EMA), Bollinger Bands y filtro de volumen.
 
 ## Características
 
@@ -15,7 +15,7 @@ Bot de trading automatizado que se conecta a Binance usando la API oficial. Impl
 
 ```
 bot.py          — Loop principal, orquesta todo
-strategy.py     — Lógica de señales (RSI + EMA crossover)
+strategy.py     — Lógica de señales (RSI + EMA crossover + BB + volumen)
 exchange.py     — Wrapper de python-binance con manejo de errores
 portfolio.py    — Seguimiento de trades abiertos/cerrados
 config.py       — Configuración vía variables de entorno
@@ -44,7 +44,7 @@ cp .env.example .env
 | `STOP_LOSS_PERCENT` | % de stop-loss | `2.0` |
 | `TAKE_PROFIT_PERCENT` | % de take-profit | `4.0` |
 | `MAX_OPEN_TRADES` | Máximo de trades abiertos simultáneos | `3` |
-| `KLINE_INTERVAL` | Intervalo de velas (1m, 5m, 15m, 1h…) | `15m` |
+| `KLINE_INTERVAL` | Intervalo de velas (1m, 5m, 15m, 1h…) | `5m` |
 | `LOG_LEVEL` | Nivel de log | `INFO` |
 
 ## Uso
@@ -57,7 +57,7 @@ El bot ejecuta una comprobación inmediatamente y luego a cada intervalo de vela
 
 ## Estrategias
 
-### RSI
+### RSI (período 8)
 - **BUY** cuando RSI ≤ 30 (sobreventa)
 - **SELL** cuando RSI ≥ 70 (sobrecompra)
 
@@ -65,8 +65,16 @@ El bot ejecuta una comprobación inmediatamente y luego a cada intervalo de vela
 - **BUY** en cruce alcista (EMA rápida cruza por encima de la lenta)
 - **SELL** en cruce bajista (EMA rápida cruza por debajo de la lenta)
 
+### Bollinger Bands (20, 2σ)
+- **BUY** cuando el precio toca/baja de la banda inferior
+- **SELL** cuando el precio toca/sube de la banda superior
+
 ### Combined (recomendada)
-Ambas señales deben coincidir para ejecutar una orden. Reduce falsos positivos.
+Al menos 2 de 3 indicadores (RSI, EMA crossover, Bollinger Bands) deben coincidir para ejecutar una orden. Además, el volumen actual debe ser ≥ 1.2x su media móvil (SMA 20) para confirmar la señal. Reduce falsos positivos significativamente.
+
+## Filtro de volumen
+
+Las señales de trading solo se ejecutan si el volumen actual supera 1.2x la media móvil simple (SMA 20) del volumen. Esto evita operar en mercados con baja liquidez donde las señales técnicas son menos fiables.
 
 ## Gestión de riesgo
 

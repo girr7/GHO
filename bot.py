@@ -61,8 +61,9 @@ class TradingBot:
         )
         result = analyze(klines)
         logger.info(
-            "Price=%.4f | Signal=%s | %s",
-            result.price, result.signal.value, result.reason,
+            "Price=%.4f | Signal=%s | Vol=%s | %s",
+            result.price, result.signal.value,
+            "OK" if result.volume_ok else "LOW", result.reason,
         )
 
         # 4. Act on signal

@@ -22,12 +22,16 @@ class Config:
     MAX_OPEN_TRADES: int = int(os.getenv("MAX_OPEN_TRADES", "3"))
 
     # Technical indicators
-    RSI_PERIOD: int = 14
+    RSI_PERIOD: int = 8
     RSI_OVERSOLD: float = 30.0
     RSI_OVERBOUGHT: float = 70.0
     MA_FAST: int = 9
     MA_SLOW: int = 21
-    KLINE_INTERVAL: str = "1m"   # Candlestick interval
+    BB_PERIOD: int = 20
+    BB_STD_DEV: float = 2.0
+    VOLUME_SMA_PERIOD: int = 20
+    VOLUME_THRESHOLD: float = 1.2  # Volume must be >= 1.2x its SMA
+    KLINE_INTERVAL: str = "5m"    # Candlestick interval
     KLINE_LIMIT: int = 100        # Number of candles to fetch
 
     # Logging
